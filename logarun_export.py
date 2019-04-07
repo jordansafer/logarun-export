@@ -29,7 +29,7 @@ _TAG_LOCATIONS = {
         {'id': lambda name: _ACTIVITY_REGEX.match(str(name))}
     ]
 }
-_DISTANCE_UNITS = ('Mile(s)', 'Kilometer(s)', 'Yard(s)')
+_DISTANCE_UNITS = ('Mile(s)', 'Kilometer(s)', 'Yard(s)', 'Meter(s)')
 
 
 def _get_text(tag):
