@@ -55,10 +55,12 @@ def _parse_log(soup):
 
     for tag in soup.findAll(*_TAG_LOCATIONS['activity_tags']):
         name = _get_text(tag.find(*_TAG_LOCATIONS['activity_title']))
-
         for field_tag in tag.findAll(*_TAG_LOCATIONS['activity_fields']):
+            value_field = field_tag.find('span')
+            if value_field is None:
+                continue
             label = field_tag.find('label')
-            value = _get_text(field_tag.find('span'))
+            value = _get_text(value_field)
 
             # Special case for units, which have no label.
             if label is None and value in _DISTANCE_UNITS:
@@ -83,7 +85,9 @@ def _export_date(session, username, date):
     response = session.get(url)
     response.raise_for_status()
     soup = bs4.BeautifulSoup(response.content, 'html.parser')
-    return {'date': str(date), **_parse_log(soup)}
+    log_entry = _parse_log(soup)
+    log_entry['date'] = str(date)
+    return log_entry
 
 
 def export_date_range(username, password, start_date, end_date, delay=1):
