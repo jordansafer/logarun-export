@@ -7,10 +7,16 @@ backup and analysis.
 ### Usage
 `logarun_export` runs as a Python script that downloads all logs in a given
 date range. To run the script, clone this repository, install the dependencies,
-and store your LogARun credentials in the `LOGARUN_USERNAME` and
-`LOGARUN_PASSWORD` environment variables. The do
+and do
 ```
-$ python logarun_export.py <start-date> <end-date>
+$ python logarun_export.py -u <username> -p <password> <start-date> <end-date>
 ```
 A JSON file will be created with information about all activities and notes for
-the days in the given range.
+the days in the given range. You can also store your username and password in the 
+LOGARUN_USERNAME and LOGARUN_PASSWORD environment variables.
+
+### Getting dependencies
+You can get beautiful soup with pip:
+```
+$ pip install bs4
+```
