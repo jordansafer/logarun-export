@@ -36,7 +36,7 @@ def get_activity(act):
 
 def is_uploadable(act):
   supported_activities = ["EBikeRide", "Ride", "AlpineSki", "Swim", \
-    "Elliptical"] # Run
+    "Elliptical", "Run"]
   return act in supported_activities
 
 def main():
