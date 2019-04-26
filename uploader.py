@@ -19,8 +19,25 @@ def get_meters(dist, units):
     return dist * 1000
   elif (units.startswith("Meter")):
     return dist
+  elif (units.startswith("Yard")):
+    return dist * 0.9144
   else: # miles
     return dist * 1609.344
+
+def get_activity(act):
+  if (act.startswith("Bike")):
+    return "Ride"
+  elif (act.startswith("Exercise Bike")):
+    return "EBikeRide"
+  elif (act.startswith("Nordic" )):
+    return "AlpineSki"
+  else:
+    return act
+
+def is_uploadable(act):
+  supported_activities = ["EBikeRide", "Ride", "AlpineSki", "Swim", \
+    "Elliptical"] # Run
+  return act in supported_activities
 
 def main():
 
@@ -36,13 +53,13 @@ def main():
     client = Client()
 
     # You need to run the strava_local_client.py script - with your application's ID and secret - to generate the access token.
-    access_token = "ebdaaf4293b002c782fd56c0b90720d3c605ae86" # replace this with your token
+    access_token = "3e4cc57201d5fcd71202003e1fbc1fed0da65b93" # replace this with your token
     client.access_token = access_token
     athlete = client.get_athlete()
     logger("Now authenticated for " + athlete.firstname + " " + athlete.lastname)
            
     # We open the cardioactivities CSV file and start reading through it
-    with open('logarun_export_20140601_20190415.json') as f:
+    with open('logarun_export_20190415_20190426.json') as f:
         days = json.load(f)
         activity_counter = 0
         for day in days:
@@ -54,14 +71,19 @@ def main():
             date = day['date']
             title = day['title']
             for act in day['activities']:
-                if (not act['type'].startswith('Run')):
+                act_type = get_activity(act['type'])
+                if (not is_uploadable(act_type)):
                     continue
                 logger("Manually uploading " + date)
                 duration = get_duration(act['Time']) # time in seconds
                 dist = get_meters(float(act['Distance']), act['Units'])
 
                 # extra
-                shoes = act['Shoes']
+                if (act_type.startswith("Run")):
+                    shoes = act['Shoes']
+                    extra = "\nShoes: " + shoes
+                else:
+                    extra = ""
            
                 try:
                     upload = client.create_activity(
@@ -69,8 +91,8 @@ def main():
                         start_date_local = date + "T00:00:00Z",
                         elapsed_time = duration,
                         distance = dist,
-                        description = note + "\n Shoes: " + shoes,
-                        activity_type = "Run"
+                        description = note + extra,
+                        activity_type = act_type
                     )
                     
                     logger("Manually created " + date)
