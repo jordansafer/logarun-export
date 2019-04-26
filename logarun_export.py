@@ -51,10 +51,13 @@ def _login(session, username, password):
 
 def _parse_log(soup):
     """Parse the contents of a daily log entry."""
-    activities = defaultdict(dict)
+    activities = []
 
     for tag in soup.findAll(*_TAG_LOCATIONS['activity_tags']):
-        name = _get_text(tag.find(*_TAG_LOCATIONS['activity_title']))
+        activity = {}
+        activity['type'] = \
+            _get_text(tag.find(*_TAG_LOCATIONS['activity_title']))
+        
         for field_tag in tag.findAll(*_TAG_LOCATIONS['activity_fields']):
             value_field = field_tag.find('span')
             if value_field is None:
@@ -64,11 +67,11 @@ def _parse_log(soup):
 
             # Special case for units, which have no label.
             if label is None and value in _DISTANCE_UNITS:
-                label = 'Distance Units'
+                label = 'Units'
             else:
                 label = _get_text(label)
-
-            activities[name][label] = value
+            activity[label] = value
+        activities.append(activity)
 
     return {
         'note': _get_text(soup.find(*_TAG_LOCATIONS['note'])),
