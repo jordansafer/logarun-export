@@ -42,19 +42,20 @@ def is_uploadable(act):
 
 def updateClient(client, c_id, secret):
     getToken(c_id, secret)
-    new_token = access_token
+    new_token = client.access_token
 
-    while new_token == access_token:
+    while new_token == client.access_token:
         # You need to run the strava_local_client.py script - with your application's ID and secret - to generate the access token.
-        token_file = open("strava_access.txt", r+)
+        token_file = open("strava_access.txt", "r")
         new_token = token_file.read()
+        print("hi")
         time.sleep(1)
     
     #access_token = "3e4cc57201d5fcd71202003e1fbc1fed0da65b93" # replace this with your token
     
-    client.access_token = access_token
+    client.access_token = new_token
     athlete = client.get_athlete()
-    logger("Now authenticated for " + athlete.firstname + " " + athlete.lastname)
+    print("Now authenticated for " + athlete.firstname + " " + athlete.lastname)
            
 
 def uploadActivities(data, c_id, secret):

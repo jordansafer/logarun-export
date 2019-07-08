@@ -28,25 +28,33 @@ CLIENT_SECRET = None
 @app.route("/auth")
 def auth_callback():
     code = request.args.get('code')
-    access_token = API_CLIENT.exchange_code_for_token(
+    print(code)
+    print(CLIENT_ID)
+    print(CLIENT_SECRET)
+    response = API_CLIENT.exchange_code_for_token(
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         code=code
         )
+    access_token = response['access_token']
     with open("strava_access.txt","w+") as f:
         f.write(access_token)
     print(access_token)
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
     return "Strava access granted"
-
 
 def getToken(client_id, client_secret):
     import subprocess
     import sys
 
+    global CLIENT_ID, CLIENT_SECRET
     CLIENT_ID, CLIENT_SECRET = client_id, client_secret
     auth_url = API_CLIENT.authorization_url(
-        client_id=args['<client_id>'],
-        redirect_uri='http://127.0.0.1:{port}/auth'.format(port=args['--port']),
+        client_id=client_id,
+        redirect_uri='http://127.0.0.1:{port}/auth'.format(port=8000),
         scope='activity:write',
         state='from_cli'
         )
@@ -55,4 +63,4 @@ def getToken(client_id, client_secret):
         subprocess.call(['open', auth_url])
     else:
         print('Go to {0} to authorize access: '.format(auth_url))
-    app.run(port=int(args['--port']))
+    app.run(port=8000)
