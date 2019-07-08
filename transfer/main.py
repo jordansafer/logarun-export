@@ -1,9 +1,9 @@
 
 from logarun_export import export_date_range
-
 import PySimpleGUI as SG
+from datetime import datetime
 
-
+# Request dates, logarun login
 form = SG.FlexForm('Logarun to Strava transfer info', auto_size_text=True, default_element_size=(40, 1))
 layout = [
         [SG.Text('logarun username'), SG.InputText(key='uname')],
@@ -15,13 +15,10 @@ layout = [
         [SG.Ok(key='1')]]
 
 b,v = form.Layout(layout).Read()
-print(v)
-print(v['sdate'][0:9])
-print(v['uname'])
-x = 1/0
+
 ## get dates
-
-
+start = datetime.strptime(v['sdate'][0:10], "%Y-%m-%d")
+end = datetime.strptime(v['edate'][0:10], "%Y-%m-%d")
 
 ## get username, password
 username = 'fileyfood500'
@@ -31,11 +28,12 @@ password = 'mlpnko'
 
 
 ## get logarun logs
-data = export_date_range(username,
-                        password,
-                        args.start,
-                        args.end)
-
+data = export_date_range(v['uname'],
+                         v['pass'],
+                         start,
+                         end,
+                         0.1) 
+print(data)
 
 
 ## upload to strava

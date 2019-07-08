@@ -109,6 +109,7 @@ def export_date_range(username, password, start_date, end_date, delay=1):
             date = start_date + timedelta(days=day)
             data.append(_export_date(session, username, date))
             log.info('Exported log for %s', date)
+            print('Exported log for %s', date)
             time.sleep(delay)
 
     return data
