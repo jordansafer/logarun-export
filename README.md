@@ -1,6 +1,15 @@
-# CSV to Strava Uploader
+# Logarun to Strava
 
 ## Usage:
+Run main.py with python3:
+cd transfer
+python main.py
+
+Enter your logarun info. Get strava keys by going to strava, go to settings (top right corner), create API key (bottom setting on left sidebar), then copy client Id + secret.
+
+UI is trashy (you need to click some buttons twice) because PySimpleGUI doesn't work well for Mac.
+
+## Usage (Depracated):
 ** Getting your data from logarun **
 TODO: write these instructions. tldr - get xml file from logarun front page, then convert xml to csv (I will upload a script I wrote for this)
 
