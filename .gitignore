@@ -1,1 +1,14 @@
-log.txt
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+transfer/__pychache__/*
+
+# Distributions / packaging
+*.egg-info
+
+# Unit test / coverage reports
+.cache
+.coverage
+
+# info files
+*/*.txt
