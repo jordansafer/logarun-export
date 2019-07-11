@@ -88,16 +88,21 @@ def uploadActivities(data, c_id, secret):
             if (not is_uploadable(act_type)):
                 continue
             logger("Manually uploading " + date)
-            duration = get_duration(act['Time']) # time in seconds
-            dist = get_meters(float(act['Distance']), act['Units'])
-
             # extra
             if (act_type.startswith("Run")):
                 shoes = act['Shoes']
                 extra = "\nShoes: " + shoes
             else:
                 extra = ""
-       
+            if 'Distance' in act:
+                dist = get_meters(float(act['Distance']), act['Units'])
+            else:
+                dist = None
+            if 'Time' in act:
+                duration = get_duration(act['Time'])
+            else:
+                duration = None
+      
             try:
                 upload = client.create_activity(
                     name = title,
