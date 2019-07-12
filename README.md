@@ -18,6 +18,4 @@ Derived from @elliothevel's [logarun exporter](https://github.com/elliothevel/lo
 
 Uses the Strava v3 API (documented [here](http://strava.github.io/api/)) to upload CSV activities exported from logarun/flotrack.
 
-Borrows liberally from @anthonywu's [Strava API Experiment](https://github.com/anthonywu/strava-api-experiment) and @marthinsen's [Strava Upload](https://github.com/marthinsen/stravaupload) projects. Uses @hozn's [stravalib](https://github.com/hozn/stravalib) to interact with the Strava API. Thanks to all.
-
 XML parsing from https://www.geeksforgeeks.org/xml-parsing-python/
